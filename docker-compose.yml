@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    container_name: coders-follow-the-sun
+    ports:
+      - "8888:80"
+    restart: unless-stopped

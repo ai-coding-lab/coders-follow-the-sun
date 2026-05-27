@@ -1,0 +1,8 @@
+data/raw/
+data/*.jsonl
+data/*.gz
+data/cities1000*
+.dev_start_time
+.DS_Store
+*.pyc
+__pycache__/
