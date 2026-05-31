@@ -632,10 +632,24 @@ function tick(t) {
   requestAnimationFrame(tick);
 }
 
+// When the intro view finishes, restart the timelapse from a fresh 00:00 UTC
+// so the reveal lines up with the start of the 24h loop.
+window.addEventListener("intro:complete", () => {
+  startTime = null;
+  pausedElapsed = null;
+  prevDayFraction = 0;
+  finaleActive = false;
+  finaleEl.classList.remove("show", "fade");
+});
+
 (async function start() {
   const data = await loadData();
   if (!data) return;
   init(data);
+  // Expose the real aggregated daily total so the intro counter uses real data.
+  window.__dayTotal = dayTotalEvents;
   loadingEl.style.display = "none";
+  // Start the globe immediately; it animates faintly behind the intro overlay
+  // (0秒目から動きを発生させる), then intro:complete restarts it fresh on reveal.
   requestAnimationFrame(tick);
 })();

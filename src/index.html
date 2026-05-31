@@ -193,6 +193,126 @@
     color: var(--neon); font-size: 14px; letter-spacing: 0.2em;
     z-index: 100;
   }
+
+  /* ===== Intro view (本編前の差し込み) ===== */
+  #intro {
+    position: absolute; inset: 0; z-index: 300;
+    overflow: hidden; cursor: pointer;
+    transition: opacity 0.7s ease-out;
+  }
+  #intro.done { opacity: 0; pointer-events: none; }
+  #intro .intro-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 38%, rgba(2,16,28,0.62) 0%, rgba(0,0,0,0.86) 58%, rgba(0,0,0,0.93) 100%);
+  }
+  #intro .beat {
+    position: absolute; left: 7%; right: 7%; top: 50%;
+    transform: translateY(-46%);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    text-align: left;
+  }
+  #intro .beat.active {
+    opacity: 1; visibility: visible;
+    transform: translateY(-50%);
+    transition-delay: 0.05s;
+  }
+  /* Beat A — concept hook */
+  #intro .kicker {
+    font-size: clamp(11px, 2.6vw, 14px);
+    letter-spacing: 0.18em; color: var(--neon);
+    opacity: 0.85; margin-bottom: 14px;
+  }
+  #intro .big {
+    font-size: clamp(30px, 8vw, 56px);
+    font-weight: 900; line-height: 1.08; letter-spacing: -0.02em;
+    text-shadow: 0 0 16px rgba(0,229,255,0.55), 0 0 42px rgba(0,229,255,0.25);
+  }
+  #intro .big .accent { color: var(--neon); }
+  #intro .lead {
+    margin-top: 18px;
+    font-size: clamp(13px, 3.4vw, 18px);
+    line-height: 1.6; color: #cfe9ff; opacity: 0.92;
+  }
+  #intro .ticker {
+    margin-top: 26px; display: flex; flex-direction: column; gap: 2px;
+    border-left: 3px solid var(--hot); padding-left: 14px;
+  }
+  #intro .ticker-num {
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: clamp(26px, 8vw, 46px); font-weight: 900;
+    color: var(--hot); line-height: 1.0;
+    text-shadow: 0 0 18px rgba(255,56,96,0.6);
+  }
+  #intro .ticker-cap {
+    font-size: clamp(10px, 2.4vw, 13px); color: #9bd9ff; opacity: 0.85;
+    letter-spacing: 0.04em;
+  }
+  /* Beat B/C — head strips */
+  #intro .head-strip {
+    font-size: clamp(15px, 4.2vw, 22px); font-weight: 800;
+    color: var(--neon); letter-spacing: 0.06em; margin-bottom: 20px;
+    text-shadow: 0 0 12px rgba(0,229,255,0.4);
+  }
+  #intro .head-strip.warn { color: var(--warn); text-shadow: 0 0 12px rgba(255,204,0,0.4); }
+  /* Beat B — watch list */
+  #intro .watch { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  #intro .watch li {
+    display: flex; align-items: center; gap: 14px;
+    font-size: clamp(14px, 3.8vw, 19px); line-height: 1.35; color: #eaf6ff;
+    opacity: 0; transform: translateX(-16px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  #intro .beat.active .watch li { opacity: 1; transform: translateX(0); }
+  #intro .beat.active .watch li:nth-child(1) { transition-delay: 0.15s; }
+  #intro .beat.active .watch li:nth-child(2) { transition-delay: 0.55s; }
+  #intro .beat.active .watch li:nth-child(3) { transition-delay: 0.95s; }
+  #intro .watch .ic {
+    flex: 0 0 auto; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; border-radius: 50%;
+    background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.35);
+    box-shadow: 0 0 16px rgba(0,229,255,0.2);
+  }
+  #intro .watch b { color: var(--warn); }
+  /* Beat C — facts */
+  #intro .facts { display: flex; flex-direction: column; gap: 12px; }
+  #intro .facts > div {
+    display: flex; gap: 12px; align-items: baseline;
+    border-bottom: 1px dashed rgba(0,229,255,0.2); padding-bottom: 10px;
+  }
+  #intro .facts dt {
+    flex: 0 0 56px; color: var(--warn); font-weight: 800;
+    font-size: clamp(12px, 3vw, 15px); letter-spacing: 0.06em;
+  }
+  #intro .facts dd {
+    font-size: clamp(13px, 3.4vw, 17px); color: #eaf6ff; line-height: 1.4;
+  }
+  #intro .facts .est {
+    display: block; font-size: clamp(9px, 2.2vw, 11px);
+    color: #9bd9ff; opacity: 0.7; margin-top: 2px;
+  }
+  #intro .go {
+    margin-top: 28px; font-size: clamp(15px, 4.2vw, 22px); font-weight: 800;
+    color: #fff; text-shadow: 0 0 14px rgba(255,204,0,0.55);
+    animation: introPulse 1.1s ease-in-out infinite;
+  }
+  @keyframes introPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+  #intro .skip {
+    position: absolute; right: 5%; bottom: 5%;
+    font-size: clamp(10px, 2.4vw, 13px); color: #9bd9ff; opacity: 0.6;
+    letter-spacing: 0.04em;
+  }
+  #intro .progress {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+    background: rgba(255,255,255,0.08);
+  }
+  #intro .progress span {
+    display: block; height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--neon), var(--warn));
+    box-shadow: 0 0 10px rgba(0,229,255,0.6);
+  }
 </style>
 </head>
 <body>
@@ -241,6 +361,44 @@
       <div class="stat"><span id="finale-total">0</span> commits / day</div>
     </div>
   </div>
+  <div id="intro">
+    <div class="intro-bg"></div>
+
+    <!-- Beat A: concept hook -->
+    <section class="beat" data-beat="0">
+      <div class="kicker">CODERS OF EARTH ／ パイロット #1</div>
+      <h1 class="big">地球は、<br><span class="accent">コードで眠らない。</span></h1>
+      <p class="lead">あなたが眠っている今も、<br>地球の裏側では誰かがコミットしている。</p>
+      <div class="ticker">
+        <span class="ticker-num" id="intro-counter">0</span>
+        <span class="ticker-cap">commits / 24h（GitHub実データ集計）</span>
+      </div>
+    </section>
+
+    <!-- Beat B: what to watch -->
+    <section class="beat" data-beat="1">
+      <div class="head-strip">▎ これから見えるもの</div>
+      <ul class="watch">
+        <li><span class="ic">☀</span><span>太陽（昼夜の境界）が<b>西へ</b>進む</span></li>
+        <li><span class="ic">💡</span><span>朝が来た街から順に<b>コードの光</b>が灯る</span></li>
+        <li><span class="ic">🌊</span><span>24時間で<b>“コードの波”</b>が地球を一周</span></li>
+      </ul>
+    </section>
+
+    <!-- Beat C: real data -->
+    <section class="beat" data-beat="2">
+      <div class="head-strip warn">▎ これは実データです</div>
+      <dl class="facts">
+        <div><dt>出典</dt><dd>GH Archive（GitHub 公開イベント）</dd></div>
+        <div><dt>期間</dt><dd>2012–2014 ／ 夏至 ±7日</dd></div>
+        <div><dt>規模</dt><dd>位置付き 約400万コミットを24hに集約<span class="est">※推定・集計値</span></dd></div>
+      </dl>
+      <div class="go">▶ 本編スタート</div>
+    </section>
+
+    <div class="skip">タップでスキップ ▸</div>
+    <div class="progress"><span id="intro-progress"></span></div>
+  </div>
 </div>
 <script type="importmap">
 {
@@ -249,6 +407,7 @@
   }
 }
 </script>
+<script src="./intro.js"></script>
 <script type="module" src="./main.js"></script>
 </body>
 </html>

@@ -21,6 +21,7 @@ coders-follow-the-sun/
 │   └── location-map.json
 └── src/
     ├── index.html
+    ├── intro.js          # 本編前イントロビューの進行制御
     ├── main.js
     └── data/
         ├── activity-24h.json
@@ -50,7 +51,7 @@ flowchart LR
     GJ --> AG[aggregate.py]
     AG --> AJ[src/data/activity-24h.json]
     AG --> TC[src/data/top-cities.json]
-    AJ --> WEB[nginx :8888]
+    AJ --> WEB[nginx :8890]
     TC --> WEB
     WEB --> USER[Browser<br/>Three.js Globe]
 ```
@@ -80,6 +81,26 @@ flowchart TB
 - location 付きイベント率: 約46-50%（年により変動）
 - ジオコード後の有効イベント: 約400-500万件想定
 - 配信用 activity-24h.json: 1-5MB（144タイムビン × 緯度経度1度グリッド）
+
+## イントロビュー（本編前差し込み）
+
+- `intro.js`（classic script）が `index.html` 先頭のイントロ層 `#intro` を進行制御
+- 3ビート構成：
+    1. **コンセプト訴求**: 「地球は、コードで眠らない。」＋ 24h累積コミットのカウンタ（`window.__dayTotal` 実データ）
+    1. **見どころ予告**: 太陽の西進／街の点灯／コードの波 を順次提示
+    1. **実データ根拠**: GH Archive 出典・期間・規模を提示
+- 約8.9秒で自動終了、タップで即スキップ可
+- 本編の地球儀はイントロ層の背後で 0秒目から稼働（薄く透過）。`intro:complete` イベントで `startTime` をリセットし、リビール時に 00:00 UTC から再生
+
+```mermaid
+flowchart LR
+    LOAD2[index.html ロード] --> FLAG[intro.js: __introActive=true]
+    FLAG --> SEQ[3ビート進行<br/>counter / progress]
+    LOAD2 --> MAIN[main.js: tick 即開始<br/>地球儀は背後で稼働]
+    SEQ --> DONE[intro:complete 発火]
+    DONE --> RESET[main.js: 24hループを<br/>00:00 から再開]
+    RESET --> REVEAL[#intro フェードアウト → 本編表示]
+```
 
 ## 描画ループ
 

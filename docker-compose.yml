@@ -3,5 +3,5 @@ services:
     build: .
     container_name: coders-follow-the-sun
     ports:
-      - "8888:80"
+      - "8890:80"
     restart: unless-stopped
